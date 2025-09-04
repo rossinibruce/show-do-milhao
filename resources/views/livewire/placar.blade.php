@@ -5,7 +5,6 @@
                 <tr>
                     <th>#</th>
                     <th>Nome</th>
-                    <th>Setor</th>
                     <th>Pontuação</th>
                     <th>Tempo</th>
                 </tr>
@@ -18,7 +17,6 @@
                     <tr>
                         <td>{{ $loop->iteration + ($pontuacoes->currentPage() - 1) * $pontuacoes->perPage() }}</td>
                         <td>{{ $pontuacao->jogador->nome }}</td>
-                        <td>{{ $pontuacao->jogador->setor->descricao }}</td>
                         <td>{{ $pontuacao->pontos }}</td>
                         <td>{{ $pontuacao->tempo_formatado ?? 'N/A' }}</td>
                     </tr>

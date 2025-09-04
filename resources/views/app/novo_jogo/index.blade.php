@@ -19,14 +19,16 @@
                                     <input type="text" class="form-control" id="name" name="nome">
                                 </div>
 
-                                <div class="form-group mb-4">
-                                    <label for="exampleFormControlSelect1">Selecione seu setor de trabalho:</label>
+                                <input type="hidden" name="setor_id" value="1">
+                                {{-- Removido a pedido da segurança do trabalho --}}
+                                {{-- <div class="form-group mb-4">
+                                    <label for="setor_id">Selecione seu setor de trabalho:</label>
                                     <select class="form-control" id="setor_id" name="setor_id">
                                         @foreach ($setores as $setor)
                                             <option value="{{ $setor->id }}">{{ $setor->descricao }}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group d-flex justify-content-center mb-4">
                                     <a href="{{ route('home') }}" type="button" 
