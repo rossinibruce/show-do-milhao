@@ -15,6 +15,7 @@ class Placar extends Component
     {
         $pontuacoes = Pontuacao::with('jogador')
             ->select('*', DB::raw('TIMESTAMPDIFF(SECOND, inicio, fim) as tempo'))
+            ->whereNotNull('fim')
             ->orderByDesc('pontos')
             ->orderBy('tempo', 'asc')
             ->paginate(15);

@@ -30,6 +30,10 @@
     </div>
 
     <div class="row">
-        <a href="{{ route('home') }}" class="btn btn-danger">Voltar</a>
+        <a href="{{ route('home') }}" 
+            class="btn btn-warning rounded-pill shadow-lg d-flex align-items-center justify-content-center">
+            <i class="fs-4 bi bi-arrow-bar-left me-2"></i>
+            Voltar
+        </a>
     </div>
 </div>
