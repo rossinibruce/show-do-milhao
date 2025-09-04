@@ -64,3 +64,82 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Laravel Base Application
+
+### Instalação
+
+O framework Laravel tem um conjunto de requisitos para poder ser executado em ambientes específicos. Por favor, veja [Requisitos](https://laravel.com/docs/7.x#server-requirements) na seção de documentação do Laravel.
+
+O framework utilizam plugins e frameworks adicionais, então certifique-se de ter o [Composer](https://getcomposer.org/) e o [Node](https://nodejs.org/) instalados na sua máquina.
+
+A partir da versão 9.x do Laravel é necessário ter a versão 8.1 do PHP instalado. Portanto, certifique de instalar essa versão antes de prosseguir.
+
+Asumindo que sua máquina atende todos os requisitos, basta prosseguir com as intalação do laravel.
+
+1. Abra o terminal e navegue até o diretório do servidor web (apache/nginx) onde deseja instalar a aplicação. 
+
+2. Execute os seguintes comandos no terminal:
+
+```bash
+git clone git@gitlab.com:laravel/laravel-base-application.git your_project_name
+```
+
+```bash
+cd your_project_name
+```
+
+```bash
+rm -rf .git
+```
+
+```bash
+git init
+```
+
+```bash
+git remote add origin git@gitlab.com:laravel/your_new_project_repository.git
+```
+
+```bash
+composer install
+```
+
+```bash
+cp .env.example .env
+```
+
+```bash
+php artisan key:generate
+```
+
+```bash
+npm install
+```
+
+```bash
+npm run dev
+```
+
+```bash
+php artisan migrate --seed
+```
+
+```bash
+php artisan serve
+```
+
+Agora basta acessar o link (http://127.0.0.1:8000) ou (http://localhost:8000)
+
+
+Para subir os arquivos no novo repositório pela primeira vez, utilize a flag -u, para branch local trackear o branch remoto.
+
+```bash
+git push -u origin master
+```
+
+Ou, caso aconteça de dar o push inicial sem a flag -u, pode usar o comando abaixo posteriormente:
+
+```bash
+git branch -u origin/master 
+```

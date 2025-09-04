@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams_has_sports', function (Blueprint $table) {
+        Schema::create('setores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->references('id')->on('teams');
-            $table->foreignId('sport_id')->references('id')->on('sports');
+            $table->string('descricao');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams_has_sports');
+        Schema::dropIfExists('setores');
     }
 };

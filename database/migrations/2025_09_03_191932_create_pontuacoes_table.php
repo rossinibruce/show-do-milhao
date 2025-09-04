@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sports', function (Blueprint $table) {
+        Schema::create('pontuacoes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->softDeletes();
+            $table->foreignId('jogador_id')->constrained('jogadores')->onDelete('cascade');
+            $table->integer('pontos')->default(0);
+            $table->dateTime('inicio')->useCurrent();
+            $table->dateTime('fim')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sports');
+        Schema::dropIfExists('pontuacoes');
     }
 };

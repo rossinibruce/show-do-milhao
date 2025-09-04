@@ -1,0 +1,10 @@
+.logo-reponsive {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.btn-check:checked + .btn {
+    border: 2px solid gold;
+    background-color: #dc3545;
+}
