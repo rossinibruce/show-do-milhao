@@ -23,11 +23,17 @@
                 </a>
                 
                 <a href="{{ route('novo_jogo') }}" type="button" 
-                    class="btn btn-warning rounded-pill shadow-lg d-flex align-items-center justify-content-center w-100 mt-3">
+                    class="btn btn-danger rounded-pill shadow-lg d-flex align-items-center justify-content-center w-100 mt-3">
                     <i class="fs-4 bi bi-play me-2"></i>
                     Jogar Novamente
                 </a>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            var clickSound = new Audio("{{ asset('sounds/parabens.mp3') }}");
+            clickSound.play();
+        });
+    </script>
 @endsection

@@ -13,8 +13,8 @@
                 <form method="POST" action="{{ route('resposta', ['jogador' => $jogador->id, 'pergunta' => $pergunta->id]) }}">
                     @csrf
 
-                    <input type="hidden" name="jogador_id" value="{{ $jogador->id }}">
-                    <input type="hidden" name="pergunta_id" value="{{ $pergunta->id }}">
+                    <input type="hidden" id="jogador_id" name="jogador_id" value="{{ $jogador->id }}">
+                    <input type="hidden" id="pergunta_id" name="pergunta_id" value="{{ $pergunta->id }}">
                     
                     <div class="card bg-danger text-white mb-5">
                         <div class="card-body">
@@ -46,10 +46,14 @@
 
     <script>
         $(document).ready(function() {
-            var clickSound = new Audio("{{ asset('sounds/esta-certo-disso.mp3') }}");
+            var perguntaId = $('#pergunta_id').val();
+            var perguntaPlay = new Audio("{{ asset('sounds/pergunta" + perguntaId + ".mp3') }}");
+            var estaCerto = new Audio("{{ asset('sounds/esta-certo-disso.mp3') }}");
+
+            perguntaPlay.play();
 
             $('input[name="resposta"]').on('change', function() {
-                clickSound.play();
+                estaCerto.play();
 
                 $('#submit').removeClass('d-none');
             });

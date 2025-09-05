@@ -25,12 +25,20 @@ class PontuacaoController extends Controller
 
     public function iniciarJogo(Request $request)
     {
-        // Valida os dados do formulário
-        // $request->validate([
-        //     'nome' => 'required|string|max:255',
-        //     'setor_id' => 'required|exists:setores,id',
-        // ]);
+        // Invalida a sessão caso haja alguma ativa
+        session()->invalidate();
 
+        // Valida os dados do formulário
+        $request->validate(
+            [
+                'nome' => 'required|string|max:255',
+            ],
+            [
+                'nome.required' => 'O campo nome deve ser preenchido.',
+                'nome.string'   => 'O nome deve ser um texto.',
+                'nome.max'      => 'O nome não pode ter mais que 255 caracteres.',
+            ]
+        );
 
         // Cria o jogador
         $jogador = Jogador::create($request->all());
@@ -42,7 +50,7 @@ class PontuacaoController extends Controller
             'inicio' => now(),
         ]);
 
-        // Armazena na sessão
+        // Cria e armazena os dados na sessão
         session([
             'jogador_id' => $jogador->id,
             'pontuacao_id' => $pontuacao->id,
@@ -54,25 +62,32 @@ class PontuacaoController extends Controller
 
     public function jogo(Jogador $jogador, $pergunta)
     {
-        if (session('jogador_id') != $jogador->id) {
+        if (session('jogador_id') != $jogador->id || session('pergunta_id') != (int) $pergunta) {
+            // Invalida a sessão
+            session()->invalidate();
+
             return redirect()->route('novo_jogo')->withErrors('Acesso inválido ao jogo.');
         }
 
         $pergunta = Pergunta::find($pergunta);
         $respostas = Resposta::where('pergunta_id', $pergunta->id)->get();
 
-        return view('app.novo_jogo.pergunta', compact('jogador', 'pergunta', 'respostas'));
+        // return view('app.novo_jogo.pergunta', compact('jogador', 'pergunta', 'respostas'));
+        return response()
+            ->view('app.novo_jogo.pergunta', compact('jogador', 'pergunta', 'respostas'))
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate') // não deixa cachear
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function resposta(Request $request)
     {
         $pergunta = Pergunta::find($request->pergunta_id);
         $resposta = Resposta::find($request->resposta);
-
         $pontuacao = Pontuacao::find(session('pontuacao_id'));
 
+        // Valida resposta
         if ($resposta->validacao == 1) {
-
             // Atualiza a pontuação
             $pontuacao->pontos += $pergunta->valor;
             $pontuacao->fim = now();
@@ -87,7 +102,8 @@ class PontuacaoController extends Controller
                 // Continua o jogo
                 // Atualiza a sessão para a próxima pergunta
                 session(['pergunta_id' => $pergunta->id + 1]);
-                return redirect()->route('jogo', ['jogador' => $request->jogador_id, 'pergunta' => $pergunta->id + 1]);
+                
+                return redirect()->route('acertou', ['jogador' => $request->jogador_id, 'pergunta' => $pergunta->id, 'resposta' => $resposta->id]);
             }
         } else {
             // Finaliza o jogo
@@ -99,12 +115,20 @@ class PontuacaoController extends Controller
         }
     }
 
-    public function errou(Jogador $jogador, Pergunta $pergunta, Resposta $resposta)
+    public function acertou(Jogador $jogador, Pergunta $pergunta, Resposta $resposta)
     {
         if (session('jogador_id') != $jogador->id) {
+            // Invalida a sessão
+            session()->invalidate();
+
             return redirect()->route('novo_jogo')->withErrors('Acesso inválido ao jogo.');
         }
 
+        return view('app.novo_jogo.acertou', compact('jogador', 'pergunta', 'resposta'));
+    }
+
+    public function errou(Jogador $jogador, Pergunta $pergunta, Resposta $resposta)
+    {
         // Invalida a sessão ao errar a resposta
         session()->invalidate();
 
@@ -113,11 +137,7 @@ class PontuacaoController extends Controller
 
     public function finalizado(Jogador $jogador, Pergunta $pergunta, Resposta $resposta)
     {
-        if (session('jogador_id') != $jogador->id) {
-            return redirect()->route('novo_jogo')->withErrors('Acesso inválido ao jogo.');
-        }
-
-        // Invalida a sessão ao errar a resposta
+        // Invalida a sessão
         session()->invalidate();
 
         return view('app.novo_jogo.finalizado', compact('jogador', 'pergunta', 'resposta'));

@@ -17,18 +17,12 @@
                                 <div class="form-group mb-4">
                                     <label for="name">Digite seu nome completo:</label>
                                     <input type="text" class="form-control" id="name" name="nome">
+                                    @if ($errors->has('nome'))
+                                        <span class="text-danger">{{ $errors->first('nome') }}</span>
+                                    @endif
                                 </div>
 
                                 <input type="hidden" name="setor_id" value="1">
-                                {{-- Removido a pedido da segurança do trabalho --}}
-                                {{-- <div class="form-group mb-4">
-                                    <label for="setor_id">Selecione seu setor de trabalho:</label>
-                                    <select class="form-control" id="setor_id" name="setor_id">
-                                        @foreach ($setores as $setor)
-                                            <option value="{{ $setor->id }}">{{ $setor->descricao }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
 
                                 <div class="form-group d-flex justify-content-center mb-4">
                                     <a href="{{ route('home') }}" type="button" 
@@ -36,6 +30,7 @@
                                         <i class="fs-4 bi bi-door-open-fill me-2"></i>
                                         Sair
                                     </a>
+                                    
                                     <button type="submit" 
                                         class="btn btn-danger rounded-pill shadow-lg d-flex align-items-center justify-content-center ms-4">
                                         <i class="fs-4 bi bi-play-fill me-2"></i>
